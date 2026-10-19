@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { MOCK_TRACKS, MOCK_PLAYLISTS, MOCK_ARTISTS } from '../data/mockData';
+import { MOCK_TRACKS, MOCK_PLAYLISTS, MOCK_ARTISTS, USER_SPOTIFY_PROFILE } from '../data/mockData';
 import {
   exchangeCodeForToken,
   getStoredAccessToken,
@@ -14,8 +14,8 @@ const PlayerContext = createContext(null);
 export const PlayerProvider = ({ children }) => {
   // Navigation & Views
   const [activeView, setActiveView] = useState('home'); // 'home' | 'search' | 'playlist' | 'artist' | 'liked'
-  const [activePlaylistId, setActivePlaylistId] = useState('playlist-1');
-  const [activeArtistId, setActiveArtistId] = useState('artist-weeknd');
+  const [activePlaylistId, setActivePlaylistId] = useState('pl-backin16');
+  const [activeArtistId, setActiveArtistId] = useState('artist-anirudh');
   const [navigationHistory, setNavigationHistory] = useState([{ view: 'home' }]);
   const [historyIndex, setHistoryIndex] = useState(0);
 
@@ -40,13 +40,13 @@ export const PlayerProvider = ({ children }) => {
   const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // Spotify Connected User Profile
+  // Spotify Connected User Profile (defaults to viki ✦ / Vignesh Shankar)
   const [spotifyUser, setSpotifyUser] = useState(() => {
     try {
       const saved = localStorage.getItem('spotify_user_profile');
-      return saved ? JSON.parse(saved) : null;
+      return saved ? JSON.parse(saved) : USER_SPOTIFY_PROFILE;
     } catch {
-      return null;
+      return USER_SPOTIFY_PROFILE;
     }
   });
 
@@ -54,20 +54,13 @@ export const PlayerProvider = ({ children }) => {
   const [likedSongIds, setLikedSongIds] = useState(() => {
     try {
       const saved = localStorage.getItem('spotify_liked');
-      return saved ? JSON.parse(saved) : ['track-1', 'track-3', 'track-5'];
+      return saved ? JSON.parse(saved) : ['track-3HRaPAkrok0SwsmvtQAQ8U', 'track-2kOH2QZB7F7I1iVXqwKuBF', 'track-1odExI7RdWc4BT515LTAwj', 'track-6GGtHZgBycCgGBUhZo81xe', 'track-6M8B0tsblkkeJKtyI9NQhR'];
     } catch {
-      return ['track-1', 'track-3', 'track-5'];
+      return ['track-3HRaPAkrok0SwsmvtQAQ8U', 'track-2kOH2QZB7F7I1iVXqwKuBF', 'track-1odExI7RdWc4BT515LTAwj', 'track-6GGtHZgBycCgGBUhZo81xe', 'track-6M8B0tsblkkeJKtyI9NQhR'];
     }
   });
 
-  const [playlists, setPlaylists] = useState(() => {
-    try {
-      const saved = localStorage.getItem('spotify_playlists');
-      return saved ? JSON.parse(saved) : MOCK_PLAYLISTS;
-    } catch {
-      return MOCK_PLAYLISTS;
-    }
-  });
+  const [playlists, setPlaylists] = useState(MOCK_PLAYLISTS);
 
   const [toasts, setToasts] = useState([]);
 

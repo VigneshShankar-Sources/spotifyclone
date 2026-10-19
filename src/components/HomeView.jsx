@@ -10,7 +10,9 @@ export const HomeView = () => {
     currentTrack,
     isPlaying,
     togglePlay,
-    likedSongIds
+    likedSongIds,
+    playlists,
+    spotifyUser
   } = usePlayer();
 
   // Dynamic greeting
@@ -26,7 +28,7 @@ export const HomeView = () => {
       action: () => navigateTo('liked'),
       tracks: MOCK_TRACKS.filter((t) => likedSongIds.includes(t.id))
     },
-    ...MOCK_PLAYLISTS.map((pl) => ({
+    ...playlists.map((pl) => ({
       id: pl.id,
       title: pl.title,
       cover: pl.cover,
@@ -100,13 +102,15 @@ export const HomeView = () => {
         })}
       </div>
 
-      {/* Section 1: Made For You */}
+      {/* Section 1: Made For User */}
       <div style={{ marginTop: '36px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
-            <h2 style={{ fontSize: '24px', fontWeight: '700' }}>Made For You</h2>
+            <h2 style={{ fontSize: '24px', fontWeight: '700' }}>
+              Made For {spotifyUser?.display_name || 'viki ✦'}
+            </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '4px' }}>
-              Your personalized mixes, fresh discoveries, and favorites on repeat.
+              Your personal library playlists, favorite mixes, and tracks on repeat.
             </p>
           </div>
           <button
